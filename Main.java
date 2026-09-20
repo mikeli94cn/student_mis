@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Welcome to student manager system");
         String menu = """
-
+                
                 function menu:
                 1. Add student
                 2. Delete student
@@ -20,6 +20,11 @@ public class Main {
 
 
         while (true) {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
             System.out.println(menu);
             Scanner sc = new Scanner(System.in);
             Integer choice = sc.nextInt();
