@@ -1,88 +1,58 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Welcome to student manager system");
+        StudentService service = new StudentService();
+        System.out.println("===Welcome to student manager system===");
         String menu = """
                 
-                function menu:
+                Function Menu:
                 1. Add student
-                2. Delete student
-                3. Modify students
-                4. Query students
-                5. Show all students
-                6. Exit
+                2. Show all students
+                3. Query students
+                4. Modify students
+                5. Delete student
+                6. Sort scores
+                7. Average score
+                8. Exit
                 Please enter your choice:""";
 
 
         while (true) {
             try {
-                Thread.sleep(3000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
+
             System.out.println(menu);
-            Scanner sc = new Scanner(System.in);
-            Integer choice = sc.nextInt();
+
+            Integer choice = -1;
+            while (true) {
+                try {
+                    choice = Integer.parseInt(new Scanner(System.in).nextLine());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Please enter a number");
+                }
+            }
+
             switch (choice) {
-                case Integer i when i == 1 -> addStudent();
-                case Integer i when i == 2 -> deleteStudent();
-                case Integer i when i == 3 -> modifyStudent();
-                case Integer i when i == 4 -> queryStudent();
-                case Integer i when i == 5 -> showAllStudents();
-                case Integer i when i == 6 -> System.exit(0);
-                default -> throw new IllegalStateException("Unexpected value: " + choice);
+                case Integer i when i == 1 -> service.addStudent();
+                case Integer i when i == 2 -> service.showAllStudents();
+                case Integer i when i == 3 -> service.queryStudent();
+                case Integer i when i == 4 -> service.modifyStudent();
+                case Integer i when i == 5 -> service.deleteStudent();
+                case Integer i when i == 6 -> service.sortByScores();
+                case Integer i when i == 7 -> service.averageScore();
+                case Integer i when i == 8 -> System.exit(0);
+                default -> System.out.println("Unexpected value: " + choice);
             }
         }
 
     }
 
-    static List<Student> students = new ArrayList<>();
-
-
-    static void addStudent() {
-        System.out.println("add student");
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println("name: ");
-        String name = sc.nextLine();
-        System.out.println("age: ");
-        int age = Integer.parseInt(sc.nextLine());
-        System.out.println("email: ");
-        String email = sc.nextLine();
-        System.out.println("score: ");
-        double score = Double.parseDouble(sc.nextLine());
-
-        int id = students.size() + 1;
-
-        Student stu = new Student(id, name, age, email, score);
-        students.add(stu);
-        showAllStudents();
-
-    }
-
-    static void deleteStudent() {
-        System.out.println("delete Student");
-
-    }
-
-    static void modifyStudent() {
-        System.out.println("modify student");
-    }
-
-    static void queryStudent() {
-        System.out.println("query Student");
-    }
-
-    static void showAllStudents() {
-        for (Student stu : students) {
-            System.out.println(stu);
-        }
-
-    }
 
 }
