@@ -1,5 +1,7 @@
 package org.example;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -33,6 +35,7 @@ public class StudentService {
         while (true) {
             try {
                 score = Double.parseDouble(sc.nextLine());
+                score = BigDecimal.valueOf(score).setScale(2, RoundingMode.HALF_UP).doubleValue();
                 break;
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a score number");
@@ -57,8 +60,29 @@ public class StudentService {
         System.out.println("delete Student");
         this.showAllStudents();
         System.out.println("Enter student ID");
-        Scanner sc = new Scanner(System.in);
-        int id = Integer.parseInt(sc.nextLine());
+
+        int id = 0;
+        while (true) {
+            try {
+                id = Integer.parseInt(new Scanner(System.in).nextLine());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a number");
+            }
+        }
+        boolean isExist = false;
+        for (Student student : this.students) {
+            if (student.getId() == id) {
+                isExist = true;
+                this.students.remove(student);
+                break;
+            }
+        }
+        if (!isExist) {
+            System.out.println("student  not found");
+        } else {
+            System.out.println("student has been deleted");
+        }
 
 
     }
@@ -147,8 +171,12 @@ public class StudentService {
     }
 
     void showAllStudents() {
-        for (Student stu : students) {
-            System.out.println(stu);
+        if(students.isEmpty()) {
+            System.out.println("No students found");
+        }else {
+            for (Student stu : students) {
+                System.out.println(stu);
+            }
         }
     }
 
@@ -173,6 +201,16 @@ public class StudentService {
     }
 
     void averageScore() {
-
+        if (students.size() == 0) {
+            System.out.println("There are no students");
+        } else {
+            double sum = 0;
+            for (Student stu : students) {
+                sum += stu.getScore();
+            }
+            double average = sum / students.size();
+            average = BigDecimal.valueOf(average).setScale(2, RoundingMode.HALF_UP).doubleValue();
+            System.out.printf("average is %.2f\n", average);
+        }
     }
 }
