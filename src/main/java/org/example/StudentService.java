@@ -147,7 +147,7 @@ public class StudentService {
         for (Student stu : this.students) {
             if (stu.getName().equals(name)) {
                 isExist = true;
-                System.out.println(stu.toString());
+                System.out.println(stu);
             }
         }
         if (!isExist) {
@@ -162,7 +162,7 @@ public class StudentService {
         for (Student stu : this.students) {
             if (stu.getEmail().equals(email)) {
                 isExist = true;
-                System.out.println(stu.toString());
+                System.out.println(stu);
             }
         }
         if (!isExist) {
@@ -201,7 +201,7 @@ public class StudentService {
     }
 
     void averageScore() {
-        if (students.size() == 0) {
+        if (students.isEmpty()) {
             System.out.println("There are no students");
         } else {
             double sum = 0;
