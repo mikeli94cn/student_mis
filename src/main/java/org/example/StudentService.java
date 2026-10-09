@@ -1,5 +1,8 @@
 package org.example;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -171,9 +174,9 @@ public class StudentService {
     }
 
     void showAllStudents() {
-        if(students.isEmpty()) {
+        if (students.isEmpty()) {
             System.out.println("No students found");
-        }else {
+        } else {
             for (Student stu : students) {
                 System.out.println(stu);
             }
@@ -211,6 +214,20 @@ public class StudentService {
             double average = sum / students.size();
             average = BigDecimal.valueOf(average).setScale(2, RoundingMode.HALF_UP).doubleValue();
             System.out.printf("average is %.2f\n", average);
+        }
+    }
+
+    void saveRecords() {
+        String fileName = "students.txt";
+
+        File file = new File(fileName);
+        FileWriter writer = null;
+        for (Student student : students) {
+            try {
+                writer.write(student.toString());
+            } catch (IOException e) {
+                System.err.println(e.getMessage());
+            }
         }
     }
 }
