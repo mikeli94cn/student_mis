@@ -1,0 +1,1 @@
+Student [id=1, name=mikeli, age=32, email=lishuo94@126.com, score=59.0]

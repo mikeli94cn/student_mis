@@ -47,7 +47,7 @@ public class Main {
                 case Integer i when i == 5 -> service.deleteStudent();
                 case Integer i when i == 6 -> service.sortByScores();
                 case Integer i when i == 7 -> service.averageScore();
-                case Integer i when i == 8 -> System.exit(0);
+                case Integer i when i == 8 -> service.exit();
                 default -> System.out.println("Unexpected value: " + choice);
             }
         }
