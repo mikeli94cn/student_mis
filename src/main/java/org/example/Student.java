@@ -56,11 +56,13 @@ public class Student {
         this.score = score;
     }
 
-    @Override
-    public String toString() {
-        return "Student [id=" + id + ", name=" + name + ", age=" + age  + ", email=" + email + ", score=" + score + "]";
+
+    public static String fieldsToCsv() {
+        return "id,name,age,email,score";
     }
 
-
+    public String instanceToCsv() {
+        return id + "," + name + "," + age + "," + email + "," + score;
+    }
 
 }
