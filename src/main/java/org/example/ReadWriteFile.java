@@ -1,27 +1,57 @@
 package org.example;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 public class ReadWriteFile {
     public static void main(String[] args) {
-        String sourceFile = "input.txt";
-        String destinationFile = "output.txt";
+
+        String fromFile = "input.txt";
+        String toFile = "output.txt";
         try (
-                BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
-                BufferedWriter writer = new BufferedWriter(new FileWriter(destinationFile))
+                BufferedReader br = new BufferedReader(new FileReader(fromFile));
+                BufferedWriter bw = new BufferedWriter(new FileWriter(toFile));
         ) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                writer.write(line);
-                writer.newLine();
+
+            /*
+            // method 1 : use read(), inefficient
+            int ch;
+            while ((ch = br.read()) != -1) {
+                bw.write(ch);
             }
-            System.out.println("File successfully copied in Java!");
+             */
+
+            // method 2 : jdk10+ , highly-optimized
+            br.transferTo(bw);
+
+            /*
+            // method 3 : jdk8 or older , efficient and without extra blank line at last
+            String line;
+            boolean isFirstLine = true;
+            while ((line = br.readLine()) != null) {
+                if (!isFirstLine) {
+                    bw.newLine();
+                }
+                bw.write(line);
+                isFirstLine = false;
+            }
+             */
+
+
         } catch (IOException e) {
-            System.err.println("An error occurred: " + e.getMessage());
+            System.out.println(e.getMessage());
+        }
+
+        // method 4, using java NIO
+        Path from = Paths.get(fromFile);
+        Path to = Paths.get(toFile);
+        try {
+            Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 }
