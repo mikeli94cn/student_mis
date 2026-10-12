@@ -6,6 +6,14 @@ public class Main {
     public static void main(String[] args) {
         StudentService service = new StudentService();
         System.out.println("===Welcome to student manager system===");
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        service.readRecords();
+
         String menu = """
                 
                 Function Menu:
