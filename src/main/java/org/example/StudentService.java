@@ -1,8 +1,6 @@
 package org.example;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -177,8 +175,9 @@ public class StudentService {
         if (students.isEmpty()) {
             System.out.println("No students found");
         } else {
+            System.out.println(Student.fieldsToCsv());
             for (Student stu : students) {
-                System.out.println(stu);
+                System.out.println(stu.instanceToCsv());
             }
         }
     }
@@ -218,15 +217,39 @@ public class StudentService {
     }
 
     void saveRecords() {
-        String fileName = "students.txt";
-        try (FileWriter writer = new FileWriter(fileName)) {
-            for (Student student : students) {
-                writer.write(student.toString());
+        String filename = "students.txt";
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
+            bw.write(Student.fieldsToCsv());
+            for (Student stu : students) {
+                bw.write("\n");
+                bw.write(stu.instanceToCsv());
             }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    void readRecords() {
+        try (BufferedReader br = new BufferedReader(new FileReader("students.txt"))) {
+            String line;
+            boolean isFirstLine = true;
+            while ((line = br.readLine()) != null) {
+                if (!isFirstLine) {
+                    String[] fields = line.split(",");
+                    int id = Integer.parseInt(fields[0]);
+                    String name = fields[1];
+                    int age = Integer.parseInt(fields[2]);
+                    String email = fields[3];
+                    double score = Double.parseDouble(fields[4]);
+                    Student stu = new Student(id, name, age, email, score);
+                    students.add(stu);
+                }
+                isFirstLine = false;
+            }
+            System.out.println("Successfully load records");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     void exit() {
